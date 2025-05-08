@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ./contact-app-frontend/Dockerfile
+      args:
+        DEPLOYMENT_ENVIRONMENT: production
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_BASE_URL=http://localhost:5203/api
+      - REACT_APP_MAX_API_RETRIES=3
+      - REACT_APP_RETRY_DELAY_MS=1500
+    depends_on:
+      - contact-app-backend
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./contact-app-backend/ContactApi/Dockerfile
+    ports:
+      - "5203:5203"
+    environment:
+      - ASPNETCORE_URLS=http://+:5203
+    restart: unless-stopped
