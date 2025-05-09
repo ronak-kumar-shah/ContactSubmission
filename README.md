@@ -42,7 +42,7 @@ contact-app/
 
 | Method | Endpoint                         | Description                  |
 |--------|------------------------------    |------------------------------|
-| GET    | `/api/contacts/getcontacts`      | Retrieve all contacts        |
+| GET    | `/api/contacts/GetContacts`      | Retrieve all contacts        |
 | POST   | `/api/contacts/CreateContact`    | Submit a new contact         |
 
 **Payload example:**
