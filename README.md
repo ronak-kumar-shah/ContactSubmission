@@ -1,116 +1,100 @@
-Contact Submission App
-A full-stack application for submitting and displaying contact information. It features a front-end built with React and Material UI, along with a back-end API for handling the submission of contact data.
+# 📇 Contact Submission App
 
-Setup & Running Instructions
-Prerequisites
-Node.js and npm installed:
+A full-stack web application for submitting, validating, and retrieving contact information. The project uses **React with Material UI (MUI)** for the frontend and **ASP.NET Core** with an **in-memory database** for the backend. The app enables users to submit contact information via a sleek form and view submitted contacts in a well-styled table — complete with real-time feedback and validations that go beyond standard expectations.
 
-Download Node.js from here.
+---
 
-Verify installation:
+## 🚀 How to Run the App
 
-node -v
-npm -v
-.NET Core SDK for the backend:
+### ✅ Prerequisites
+- [.NET SDK](https://dotnet.microsoft.com/en-us/download) (for backend)
+- [Node.js & npm](https://nodejs.org/) (for frontend)
 
-Download and install the .NET SDK from here.
+### 🛠 Backend Setup (ContactApi)
+```bash
+cd contact-app-backend/ContactApi
+dotnet restore
+dotnet run
+```
+Runs on: `http://localhost:5203`
 
-PostgreSQL (if using PostgreSQL as the database) or configure your own database in the backend.
+### 🖥 Frontend Setup
+```bash
+cd contact-app-frontend
+npm install
+npm start
+```
+Runs on: `http://localhost:3000`
 
-Folder structure :
+---
+
+
+**Folder structure :**
 contact-app/
-├── backend/
+├── contact-form-backend/
 │ └── ContactApi/
-├── frontend/
-│ └── [React app here]
+├── contact-form-frontend/
+│ └── [ReactApplication]
 ├── docker-compose.yml
 └── README.md
 
+**API Overview**
+
+| Method | Endpoint                         | Description                  |
+|--------|------------------------------    |------------------------------|
+| GET    | `/api/contacts/getcontacts`      | Retrieve all contacts        |
+| POST   | `/api/contacts/CreateContact`    | Submit a new contact         |
+
+**Payload example:**
+```json
+{
+  "name": "Ronak Shah",
+  "email": "Ronak@gmail.com",
+  "phone": "+1234567890"
+}
+```
+
 **Backend (API)**
-Navigate to the backend folder:
-
-cd contact-app-backend
-Install required packages:
-
-dotnet restore
-Build and run the API:
-
-dotnet run
-The API should be running on http://localhost:5203.
-
-Frontend (React App)
-Navigate to the frontend folder:
-
-cd contact-app-frontend
-Install dependencies:
-
-npm install
-Start the React app:
-
-npm start
-The React app should now be running on http://localhost:3000.
-
-Environment Variables
+**Environment Variables**
 For configurable settings, such as retry count for API requests, create a .env file in the frontend directory and set the following variables:
 
 REACT_APP_MAX_API_RETRIES=3
 REACT_APP_RETRY_DELAY_MS=1500
 
-API Overview
-Endpoints
-GET /api/contacts: Fetch all contacts.
 
-POST /api/contacts: Submit a new contact.
-
-The API expects the following JSON payload for the POST request:
-
-{
-"name": "Ronak Shah",
-"email": "ronak.shah@example.com",
-"phone": "+1234567890"
-}
-Tech Stack
-Frontend:
-
-React.js (with TypeScript)
-
-Material UI (MUI) for UI components
-
-Axios for making HTTP requests
-
-Backend:
-
-ASP.NET Core (C#)
-
-PostgreSQL (or other database, depending on configuration)
-
-Other:
+**Other:**
 
 Docker (for containerization)
-
 Snackbar (for displaying success/error messages)
 
-Design Decisions
-API Retry Logic: The API uses an automatic retry mechanism for failed submissions (due to network issues or server downtime). This is configured in the frontend with a retry count of 3 by default, which can be modified using the .env file.
+---
 
-UI Framework: Material UI (MUI) was chosen for its ready-to-use components and customizable theming. This speeds up development while providing a polished user interface.
+## 💡 Design Decisions & Assumptions
 
-Backend Data Storage: We use PostgreSQL as the default database. The API handles CRUD operations on the contacts, and it's extendable for future use cases.
+- **Authentication**: Not implemented, as it was assumed out of scope.  
+- **Form Validation**: Client-side validation includes max character limits and format enforcement (e.g., phone numbers accept only digits and `+`, blocking alphabetic input even via copy-paste).  
+- **UI Feedback**: Invalid inputs are highlighted in **red**, while valid ones turn **green with a checkmark** after focus loss.  
+- **State Management**: Uses `useState` for controlled form inputs and validation handling.  
+- **Code Separation**: Validation and sanitization logic are isolated in separate utility functions for clarity and maintainability.  
+- **Backend Simplicity**: An **in-memory database using Entity Framework** is used for fast iteration and ease of development.  
+- **API Design**: Follows RESTful principles with attribute-based routing (`/api/contacts` for GET/POST).
+- **API Retry Logic**: The API uses an automatic retry mechanism for failed submissions (due to network issues or server downtime). This is configured in the frontend with a retry count of 3 by default, which can be modified using the .env file
+- **Resilient API Calls**: Implements retry logic with `async/await` and exponential backoff for handling transient failures.
+- **Error Handling**: If the backend service is down or an error occurs while submitting a contact, the application will display a Snackbar with an error message and automatically retry the submission a configurable number of times.
+- **Configurable Settings**: Retry limits and timeouts are defined in `config.ts` to prevent hardcoded values.  
+- **Styling Consistency**: Leverages Material UI’s theming system for a unified look and feel.  
+- **Dockerization**: Both frontend and backend are containerized with dedicated Dockerfiles for easy deployment.  
+- **API Documentation**: Integrated Swagger (`Swashbuckle.AspNetCore`) for interactive API testing at `/swagger`.  
+---
 
-Error Handling: If the backend service is down or an error occurs while submitting a contact, the application will display a Snackbar with an error message and automatically retry the submission a configurable number of times.
+## ⏱ If I Had More Time
 
-Future Improvements
+- 🔐 Add authentication (JWT or OAuth2).
+- 👥 Add role-based authorization with Single Sign-On (SSO) or form-based authentication, enabling dynamic form rendering based on user roles.
+- 💾 **Replace in-memory DB with PostgreSQL or SQLite or SQLServer**
+- 🧪 Write Unit tests for components and validation logic and integration tests.
+- 📊 Pagination and Filtering - For displaying a large number of contacts, we can add pagination, sorting, and filtering options.
+- 📄 Improve error handling and API response structure.
+- 🧪Advanced Validation- Implement more robust form validation on the frontend (email format, phone number format, etc.) and backend.
+- 📦 Setup CI/CD pipeline using GitHub Actions or Azure DevOps.
 
-Authentication: Add user authentication using OAuth or JWT tokens for secure access to the contact submission system.
-
-Advanced Validation: Implement more robust form validation on the frontend (email format, phone number format, etc.) and backend.
-
-Pagination and Filtering: For displaying a large number of contacts, we can add pagination, sorting, and filtering options.
-
-Unit and Integration Tests: Add unit tests for frontend components and backend API endpoints to ensure stability and reliability.
-
-UI Enhancements: Improve UI further by adding animations, improving accessibility, and enhancing responsiveness for mobile devices.
-
-State Management: As the application grows, consider using a state management library (like Redux or React Query) to handle more complex state and API interactions.
-
-Containerization for Backend: Containerize the backend API using Docker to simplify deployment and scaling.
