@@ -19,9 +19,9 @@ namespace ContactApi.Controllers
 
         // GET: api/contacts/getcontacts
         /// <summary>
-        /// 
+        /// Retrieves a list of all contact records.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of contacts with Name, Email, and Phone fields.</returns>
         [HttpGet("GetContacts")]
         public async Task<IActionResult> GetContacts()
         {
@@ -31,10 +31,10 @@ namespace ContactApi.Controllers
 
         // POST: api/contacts/createcontact
         /// <summary>
-        /// 
+        /// Creates a new contact record.
         /// </summary>
-        /// <param name="contact"></param>
-        /// <returns></returns>
+        /// <param name="contact">The contact object to be added. Must include Name, Email, and Phone.</param>
+        /// <returns>The created contact object with an OK response if successful, or a BadRequest if validation fails.</returns>
         [HttpPost("CreateContact")]
         public async Task<IActionResult> CreateContact([FromBody] Contact contact)
         {
